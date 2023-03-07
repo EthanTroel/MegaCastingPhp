@@ -1,0 +1,87 @@
+version: "3.4"
+
+services:
+  php:
+    build:
+      context: .
+      target: app_php
+      args:
+        SYMFONY_VERSION: ${SYMFONY_VERSION:-}
+        STABILITY: ${STABILITY:-stable}
+
+    restart: unless-stopped
+    volumes:
+      - php_socket:/var/run/php
+    healthcheck:
+      interval: 10s
+      timeout: 3s
+      retries: 3
+      start_period: 30s
+    environment:
+      # Run "composer require symfony/mercure-bundle" to install and configure the Mercure integration
+      MERCURE_URL: ${CADDY_MERCURE_URL:-http://caddy/.well-known/mercure}
+      MERCURE_PUBLIC_URL: https://${SERVER_NAME:-localhost}/.well-known/mercure
+      MERCURE_JWT_SECRET: ${CADDY_MERCURE_JWT_SECRET:-!ChangeThisMercureHubJWTSecretKey!}
+#nécessaire pour se connecter à l'host notamment pour Sql Server s'il est sur hôte
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+
+  caddy:
+    build:
+      context: .
+      target: app_caddy
+    depends_on:
+      - php
+    environment:
+      SERVER_NAME: ${SERVER_NAME:-localhost, caddy:80}
+      MERCURE_PUBLISHER_JWT_KEY: ${CADDY_MERCURE_JWT_SECRET:-!ChangeThisMercureHubJWTSecretKey!}
+      MERCURE_SUBSCRIBER_JWT_KEY: ${CADDY_MERCURE_JWT_SECRET:-!ChangeThisMercureHubJWTSecretKey!}
+    restart: unless-stopped
+    volumes:
+      - php_socket:/var/run/php
+      - caddy_data:/data
+      - caddy_config:/config
+    ports:
+      # HTTP
+      - target: 80
+        published: ${HTTP_PORT:-80}
+        protocol: tcp
+      # HTTPS
+      - target: 443
+        published: ${HTTPS_PORT:-443}
+        protocol: tcp
+      # HTTP/3
+      - target: 443
+        published: ${HTTP3_PORT:-443}
+        protocol: udp
+
+# Mercure is installed as a Caddy module, prevent the Flex recipe from installing another service
+###> symfony/mercure-bundle ###
+###< symfony/mercure-bundle ###
+
+#
+####< doctrine/doctrine-bundle ###
+#  sqlserver-db:
+#    image: mcr.microsoft.com/mssql/server:2022-latest
+#    ports:
+#      - "1434:1433"
+#    environment:
+#      SA_PASSWORD: "SQLServerPasw0rd"
+#      ACCEPT_EULA: "Y"
+#    volumes:
+#      - ./docker/sqlserver_data:/var/lib/postgresql/data:rw
+#        
+  encore:
+    command: [ "yarn", "dev-server", "--host=0.0.0.0" ]
+    container_name: encore
+    image: node:18-alpine
+    volumes:
+      - .:/srv/app
+volumes:
+  php_socket:
+  caddy_data:
+  caddy_config:
+###> symfony/mercure-bundle ###
+###< symfony/mercure-bundle ###
+
+
