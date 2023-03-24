@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use http\Env\Request;
 
 #[ORM\Entity(repositoryClass: OffreRepository::class)]
 #[ORM\Table(name: "Offre")]
@@ -18,7 +19,7 @@ class Offre
     private ?int $id = null;
 
     #[ORM\Column(name: "Libelle", length: 255)]
-    private ?string $Libelle = null;
+    private ?string $libelle = null;
 
     #[ORM\Column(name: "DateDebut", type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $DateDeb = null;
@@ -42,7 +43,7 @@ class Offre
     private ?\DateTimeInterface $Date = null;
 
     #[ORM\Column(name: "Description", length: 255)]
-    private ?string $Description = null;
+    private ?string $description = null;
     #[ORM\JoinTable(name: 'OffreSexe')]
     #[ORM\JoinColumn(name: 'IdentifiantOffre', referencedColumnName: 'Identifiant')]
     #[ORM\InverseJoinColumn(name: 'IdentifiantSexe', referencedColumnName: 'Identifiant')]
@@ -67,6 +68,8 @@ class Offre
     #[ORM\JoinColumn(name: 'IdentifiantTypeContrat', referencedColumnName: 'Identifiant', nullable: false)]
     private ?TypeContrat $TypeContrats = null;
 
+
+
     public function __construct()
     {
         $this->sexes = new ArrayCollection();
@@ -80,12 +83,12 @@ class Offre
 
     public function getLibelle(): ?string
     {
-        return $this->Libelle;
+        return $this->libelle;
     }
 
-    public function setLibelle(string $Libelle): self
+    public function setLibelle(string $libelle): self
     {
-        $this->Libelle = $Libelle;
+        $this->libelle = $libelle;
 
         return $this;
     }
@@ -176,12 +179,12 @@ class Offre
 
     public function getDescription(): ?string
     {
-        return $this->Description;
+        return $this->description;
     }
 
-    public function setDescription(string $Description): self
+    public function setDescription(string $description): self
     {
-        $this->Description = $Description;
+        $this->description = $description;
 
         return $this;
     }

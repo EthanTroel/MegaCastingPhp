@@ -27,6 +27,18 @@ class HomeController extends AbstractController
             'offres' => $offre
         ]);
     }
+    #[Route('/offrecasting/search/', name: 'app_search')]
+    public function search(Request $request, EntityManagerInterface $entityManager)
+    {
+        $valeur = $request->query->get('search');
+        $result = $entityManager->getRepository(Offre::class)->findByLibelle($valeur, $request);
+        return $this->render('home/index.html.twig', [
+            'controller_name' => 'HomeController',
+            'offres' => $result
+        ]);
+    }
+
+
 
 
     #[Route('/offrecasting/offre/', name: 'app_offre_detail')]

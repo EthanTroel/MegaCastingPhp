@@ -11,9 +11,9 @@
 <div class="example-wrapper">
     <h1>Offres d'emplois</h1>
     <nav class="navbar navbar-light bg-light">
-        <form class="form-inline d-flex" method="GET" action="{{ path('app_offre_detail') }}">
+        <form class="form-inline d-flex" method="GET" action="{{ path('app_search') }}">
             <div class="form-group mx-sm-3 mb-2">
-                <input class="form-control mr-sm-2" type="search" name="id" placeholder="Recherche" aria-label="Recherche">
+                <input class="form-control mr-sm-2" type="search" name="search" placeholder="Recherche" aria-label="Recherche">
             </div>
             <button class="btn btn-outline-success mb-2" type="submit">Rechercher</button>
         </form>
@@ -25,7 +25,7 @@
 
         <div class="card">
             <div class="card-body">
-                <a href="{{ path('app_offre_detail', {'id': offre.id}) }}" class="text-dark font-weight-bold text-decoration-none"><h4 class="card-title">{{ offre.libelle }}</h4></a>a>
+                <a href="{{ path('app_offre_detail', {'id': offre.id}) }}" class="text-dark font-weight-bold text-decoration-none"><h4 class="card-title">{{ offre.libelle }}</h4></a>
                 <h5 class="card-title">{{ offre.localisation }}</h5>
                 <h6 class="card-title mb-2 text-muted">{{ offre.reference }}</h6>
                 <p class="card-text">Age demandé: Entre {{ offre.agemin }} et {{ offre.ageMax }} ans</p>

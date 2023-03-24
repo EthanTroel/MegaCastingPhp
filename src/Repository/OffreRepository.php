@@ -5,6 +5,7 @@ namespace App\Repository;
 use App\Entity\Offre;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * @extends ServiceEntityRepository<Offre>
@@ -37,6 +38,16 @@ class OffreRepository extends ServiceEntityRepository
         if ($flush) {
             $this->getEntityManager()->flush();
         }
+    }
+
+    public function findByLibelle( string $valeur, Request $request): array
+    {
+        return $this->createQueryBuilder('o')
+            ->where('o.libelle LIKE :valeur')
+            ->orWhere('o.description LIKE :valeur')
+            ->setParameter('valeur', '%'.$valeur.'%')
+            ->getQuery()
+            ->getResult();
     }
 
 //    /**
