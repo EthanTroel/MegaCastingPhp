@@ -14,7 +14,7 @@ use Symfony\Component\HttpFoundation\Request;
 
 class HomeController extends AbstractController
 {
-    #[Route('/offrecasting/offre', name: 'app_home')]
+    #[Route('/offrecasting/', name: 'app_home')]
     public function index(EntityManagerInterface $entityManager): Response
     {
         $offre = $entityManager->getRepository(Offre::class)->findAll();;
@@ -29,11 +29,12 @@ class HomeController extends AbstractController
     }
 
 
-        #[Route('/offrecasting/offre/?={id}', name: 'app_offre_detail')]
-    public function offre($id, EntityManagerInterface $entityManager): Response
+    #[Route('/offrecasting/offre/', name: 'app_offre_detail')]
+    public function offre(Request $request, EntityManagerInterface $entityManager): Response
     {
+        $id = $request->query->get('id');
         $offre = $entityManager->getRepository(Offre::class)->find($id);
-        if ($id == null) {
+        if ($offre == null) {
             throw $this->createNotFoundException("Aucune offre n'a été trouvée");
         }
 
@@ -41,11 +42,8 @@ class HomeController extends AbstractController
             'controller_name' => 'OffreController',
             'offre' => $offre
         ]);
-
-
-
-
     }
+
     #[Route('/offrecasting/form/', name: 'app_form')]
     public function form(Request $request): Response
     {
