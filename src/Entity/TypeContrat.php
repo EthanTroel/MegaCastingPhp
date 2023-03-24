@@ -8,14 +8,15 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: TypeContratRepository::class)]
+#[ORM\Table(name: "TypeContrat")]
 class TypeContrat
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column]
+    #[ORM\Column(name:'Identifiant')]
     private ?int $id = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(name: "Libelle", length: 255)]
     private ?string $Libelle = null;
 
     #[ORM\OneToMany(mappedBy: 'TypeContrats', targetEntity: Offre::class)]
@@ -71,5 +72,11 @@ class TypeContrat
         }
 
         return $this;
+    }
+
+
+    public function __toString(): string
+    {
+        return $this->id;
     }
 }

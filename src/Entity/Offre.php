@@ -9,53 +9,62 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: OffreRepository::class)]
+#[ORM\Table(name: "Offre")]
 class Offre
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column]
+    #[ORM\Column(name:'Identifiant')]
     private ?int $id = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(name: "Libelle", length: 255)]
     private ?string $Libelle = null;
 
-    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    #[ORM\Column(name: "DateDebut", type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $DateDeb = null;
 
-    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    #[ORM\Column(name: "DateFin", type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $DateFin = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(name: "Reference", length: 255)]
     private ?string $Reference = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(name: "Localisation", length: 255)]
     private ?string $Localisation = null;
 
-    #[ORM\Column(type: Types::SMALLINT)]
+    #[ORM\Column(name: "AgeMin", type: Types::SMALLINT)]
     private ?int $Agemin = null;
 
-    #[ORM\Column(type: Types::SMALLINT)]
+    #[ORM\Column(name: "AgeMax", type: Types::SMALLINT)]
     private ?int $AgeMax = null;
 
-    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    #[ORM\Column(name: "Date", type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $Date = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(name: "Description", length: 255)]
     private ?string $Description = null;
-
+    #[ORM\JoinTable(name: 'OffreSexe')]
+    #[ORM\JoinColumn(name: 'IdentifiantOffre', referencedColumnName: 'Identifiant')]
+    #[ORM\InverseJoinColumn(name: 'IdentifiantSexe', referencedColumnName: 'Identifiant')]
     #[ORM\ManyToMany(targetEntity: Sexe::class, mappedBy: 'Offres')]
     private Collection $sexes;
 
     #[ORM\ManyToMany(targetEntity: PartenaireDiffusion::class, mappedBy: 'Offres')]
     private Collection $partenaireDiffusions;
 
+
+
     #[ORM\ManyToOne(inversedBy: 'offres')]
+    #[ORM\JoinColumn(name: 'IdentifiantClient', referencedColumnName: 'Identifiant', nullable: false)]
     private ?Client $Clients = null;
 
-    #[ORM\ManyToOne(inversedBy: 'Offres')]
-    private ?Metier $metier = null;
+
+   #[ORM\ManyToOne(inversedBy: 'Offres')]
+   #[ORM\JoinColumn(name: 'IdentifiantMetier', referencedColumnName: 'Identifiant', nullable: false)]
+   private ?Metier $metier = null;
 
     #[ORM\ManyToOne(inversedBy: 'offres')]
+    #[ORM\JoinColumn(name: 'IdentifiantTypeContrat', referencedColumnName: 'Identifiant', nullable: false)]
     private ?TypeContrat $TypeContrats = null;
 
     public function __construct()

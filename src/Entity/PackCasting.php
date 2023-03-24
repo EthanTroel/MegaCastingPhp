@@ -9,27 +9,25 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: PackCastingRepository::class)]
+#[ORM\Table(name: "PackCasting")]
 class PackCasting
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column]
+    #[ORM\Column(name:'Identifiant')]
     private ?int $id = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(name: "Libelle", length: 255)]
     private ?string $Libelle = null;
 
-    #[ORM\Column(type: Types::SMALLINT)]
+    #[ORM\Column(name: "NombreOffres", type: Types::SMALLINT)]
     private ?int $NombreOffre = null;
 
-    #[ORM\Column(type: Types::SMALLINT)]
+    #[ORM\Column(name: "PrixPack", type: Types::SMALLINT)]
     private ?int $PrixPack = null;
 
     #[ORM\OneToMany(mappedBy: 'packCasting', targetEntity: Client::class)]
     private Collection $Clients;
-
-    #[ORM\ManyToOne(inversedBy: 'PackCastings')]
-    private ?Client $client = null;
 
     public function __construct()
     {

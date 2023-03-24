@@ -8,33 +8,35 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: MetierRepository::class)]
+#[ORM\Table(name: "Metier")]
 class Metier
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column]
+    #[ORM\Column(name:'Identifiant')]
     private ?int $id = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(name: "Libelle", length: 255)]
     private ?string $Libelle = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(name: "Description", length: 255)]
     private ?string $Description = null;
 
     #[ORM\ManyToMany(targetEntity: Conseil::class, mappedBy: 'Metiers')]
     private Collection $conseils;
 
     #[ORM\ManyToOne(inversedBy: 'metiers')]
+    #[ORM\JoinColumn(name: 'IdentifiantFicheMetier', referencedColumnName: 'Identifiant', nullable: false)]
     private ?FicheMetier $FicheMetiers = null;
 
     #[ORM\OneToMany(mappedBy: 'metier', targetEntity: Offre::class)]
     private Collection $Offres;
 
     #[ORM\ManyToOne(inversedBy: 'metiers')]
+    #[ORM\JoinColumn(name: 'IdentifiantDomaineMetier', referencedColumnName: 'Identifiant', nullable: false)]
     private ?DomaineMetier $DomaineMetiers = null;
 
-    #[ORM\ManyToMany(targetEntity: Conseil::class, inversedBy: 'metiers')]
-    private Collection $Conseils;
+
 
     public function __construct()
     {
@@ -151,5 +153,11 @@ class Metier
         $this->DomaineMetiers = $DomaineMetiers;
 
         return $this;
+    }
+
+
+    public function __toString(): string
+    {
+        return $this->id;
     }
 }

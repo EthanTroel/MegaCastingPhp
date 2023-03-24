@@ -8,41 +8,43 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: ClientRepository::class)]
+#[ORM\Table(name: "Client")]
 class Client
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column]
+    #[ORM\Column(name:'Identifiant')]
     private ?int $id = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(name: "Nom", length: 255)]
     private ?string $Nom = null;
 
-    #[ORM\Column(length: 10)]
+    #[ORM\Column(name: "Tel", length: 10)]
     private ?string $Tel = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(name: "Mail", length: 255)]
     private ?string $Mail = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(name: "Password", length: 255)]
     private ?string $Password = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(name: "Url", length: 255)]
     private ?string $Url = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(name: "Siret", length: 255)]
     private ?string $Siret = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(name: "Login", length: 255)]
     private ?string $Login = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(name: "Ville", length: 255)]
     private ?string $Ville = null;
 
-    #[ORM\Column]
+    #[ORM\Column(name: "NombreOffresRestantes")]
     private ?int $NombreOffreRestantes = null;
 
     #[ORM\ManyToOne(inversedBy: 'Clients')]
+    #[ORM\JoinColumn(name: 'IdentifiantPackCasting', referencedColumnName: 'Identifiant', nullable: false)]
     private ?PackCasting $packCasting = null;
 
     #[ORM\OneToMany(mappedBy: 'client', targetEntity: PackCasting::class)]
@@ -239,6 +241,13 @@ class Client
             }
         }
 
+
+
+
         return $this;
+    }
+    public function __toString(): string
+    {
+        return $this->id;
     }
 }

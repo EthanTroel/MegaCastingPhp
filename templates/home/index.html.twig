@@ -1,0 +1,48 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Offres d'emplois{% endblock %}
+
+{% block body %}
+<style>
+    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
+    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
+</style>
+
+<div class="example-wrapper">
+    <h1>Offres d'emplois</h1>
+    <nav class="navbar navbar-light bg-light">
+        <form class="form-inline d-flex" action="/{{ path('app_offre_detail', {'id': 'x'}) }}">
+            <div class="form-group mx-sm-3 mb-2">
+                <input class="form-control mr-sm-2" type="search" placeholder="Recherche" aria-label="Recherche">
+            </div>
+            <button class="btn btn-outline-success mb-2" type="submit">Rechercher</button>
+        </form>
+
+    </nav>
+    <div class="row">
+    {% for offre in offres %}
+
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">{{ offre.libelle }}</h4>
+                <h5 class="card-title">{{ offre.localisation }}</h5>
+                <h6 class="card-title mb-2 text-muted">{{ offre.reference }}</h6>
+                <p class="card-text">Age demandé: Entre {{ offre.agemin }} et {{ offre.ageMax }} ans</p>
+                <p class="card-text">{{ offre.description }}</p>
+                <p class="card-text">Type de contrat: {{ offre.typeContrats.libelle }}</p>
+                <h5 class="card-title">Du {{ offre.dateDeb.format("d/m/Y") }} au {{ offre.dateFin.format("d/m/Y") }}</h5>
+                <a href="#" class="btn btn-primary">Postuler</a>
+
+            </div>
+        </div>
+
+    {% endfor %}
+    </div>
+
+    </tbody>
+        </table>
+
+
+    </ul>
+</div>
+{% endblock %}

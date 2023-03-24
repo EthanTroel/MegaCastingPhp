@@ -1,6 +1,6 @@
-{% extends '../base.html.twig' %}
+{% extends 'base.html.twig' %}
 
-{% block title %}Hello OffreController!{% endblock %}
+{% block title %}!{% endblock %}
 
 {% block body %}
     <style>
@@ -23,12 +23,16 @@
                 </thead>
                 <tbody>
                 {% for offre in offres %}
-                    <tr>
-                        <td>{{ offre.libelle }}</td>
-                        <td>{{ offre.reference }}</td>
-                        <td>{{ offre.localisation }}</td>
-                    </tr>
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ offre.libelle }}</h5>
+                            <h6 class="card-subtitle mb-2 text-muted">{{ offre.reference }}</h6>
+                            <p class="card-text">{{ offre.localisation }}</p>
+                            <h5 class="card-title">Du {{ offre.datedebut }} au {{ offre.datefin }}</h5>
+                        </div>
+                    </div>
                 {% endfor %}
+
                 </tbody>
             </table>
 
