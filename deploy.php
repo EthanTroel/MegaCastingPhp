@@ -26,7 +26,7 @@ set('branch', 'main');
 
 // Hosts
 host($_ENV['DEPLOYER_REPO_HOST'])
-    ->setRemoteUser('adminlocal')
+    ->setRemoteUser('user')
     ->setHostname($_ENV['DEPLOYER_REPO_HOSTNAME'])
     ->setPort($_ENV['DEPLOYER_REPO_PORT'])
     ->set('deploy_path', '/var/www/symfony');

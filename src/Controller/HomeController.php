@@ -11,13 +11,21 @@ use Symfony\Component\Routing\Annotation\Route;
 use App\Entity\Offre;
 use App\Form\OffreType;
 use Symfony\Component\HttpFoundation\Request;
+use Knp\Component\Pager\PaginatorInterface;
+
+
 
 class HomeController extends AbstractController
 {
     #[Route('/offrecasting/', name: 'app_home')]
-    public function index(EntityManagerInterface $entityManager): Response
+    public function index(EntityManagerInterface $entityManager, PaginatorInterface $paginator, Request $request): Response
     {
-        $offre = $entityManager->getRepository(Offre::class)->findAll();;
+        $donnees = $entityManager->getRepository(Offre::class)->findAll();;
+        $offre = $paginator->paginate(
+            $donnees, // Requête contenant les données à paginer (ici nos articles)
+            $request->query->getInt('page', 1), // Numéro de la page en cours, passé dans l'URL, 1 si aucune page
+            1 // Nombre de résultats par page
+        );
         if ($offre == null) {
             throw $this->createNotFoundException("L'offre n'existe pas");
         }
@@ -28,15 +36,26 @@ class HomeController extends AbstractController
         ]);
     }
     #[Route('/offrecasting/search/', name: 'app_search')]
-    public function search(Request $request, EntityManagerInterface $entityManager)
+    public function search(Request $request, EntityManagerInterface $entityManager, PaginatorInterface $paginator): Response
     {
         $valeur = $request->query->get('search');
         $result = $entityManager->getRepository(Offre::class)->findByLibelle($valeur, $request);
+        $offres = $paginator->paginate(
+            $result,
+            $request->query->getInt('page', 1),
+            1
+        );
+        $message = null;
+        if ($offres->count() == 0) {
+            $message = "Aucune offre ne correspond à votre recherche.";
+        }
         return $this->render('home/index.html.twig', [
             'controller_name' => 'HomeController',
-            'offres' => $result
+            'offres' => $offres,
+            'message'=> $message
         ]);
     }
+
 
 
 

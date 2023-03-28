@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Offre n°{{ offre.getId() }}{% endblock %}
+{% block title %}{{offre.libelle}}{% endblock %}
 
 
 {% block body %}
@@ -10,29 +10,18 @@
     </style>
 
     <div class="example-wrapper">
-        <h1>Offre n°{{ offre.getId() }}✅</h1>
-
-        This friendly message is coming from:
+        <h1>{{ offre.libelle }}</h1>
+        <h5 class="card-title">{{ offre.localisation }}</h5>
+        <h6 class="card-title mb-2 text-muted">{{ offre.reference }}</h6>
+        <p class="card-text">Age demandé: Entre {{ offre.agemin }} et {{ offre.ageMax }} ans</p>
+        <p class="card-text">{{ offre.description }}</p>
+        <p class="card-text">Type de contrat: {{ offre.typeContrats.libelle }}</p>
+        <h5 class="card-title">Du {{ offre.dateDeb.format("d/m/Y") }} au {{ offre.dateFin.format("d/m/Y") }}</h5>
+        <br>
+        <br>
+        <a href="#" class="btn btn-primary">Postuler</a>
         <ul>
-            <table>
-                <thead>
-                <tr>
-                    <th>Libellé</th>
-                    <th>Référence</th>
-                    <th>Localisation</th>
-                </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>{{ offre.libelle}}</td>
-                        <td>{{ offre.reference }}</td>
-                        <td>{{ offre.localisation }}</td>
-                    </tr>
-                </tbody>
-            </table>
 
-            <li>Your controller at <code><a href="{{ '/srv/app/src/Controller/OffreController.php'|file_link(0) }}">src/Controller/HomeController.php</a></code></li>
-            <li>Your template at <code><a href="{{ '/srv/app/templates/offre/index.html.twig'|file_link(0) }}">templates/offre/index.html.twig</a></code></li>
         </ul>
     </div>
 {% endblock %}
