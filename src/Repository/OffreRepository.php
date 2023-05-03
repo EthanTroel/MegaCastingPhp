@@ -40,14 +40,59 @@ class OffreRepository extends ServiceEntityRepository
         }
     }
 
-    public function findByLibelle( string $valeur, Request $request): array
+    public function findByLibelle(string $valeur, string $niveaupro, string $domainemetier, string $metier, string $typecontrat, Request $request): array
     {
-        return $this->createQueryBuilder('o')
-            ->where('o.libelle LIKE :valeur')
+        $queryBuilder = $this->createQueryBuilder('o');
+        if ($valeur !== null && $valeur !== '--'){
+            $queryBuilder->where('o.libelle LIKE :valeur')
             ->orWhere('o.description LIKE :valeur')
-            ->setParameter('valeur', '%'.$valeur.'%')
-            ->getQuery()
-            ->getResult();
+            ->setParameter('valeur', '%' . $valeur . '%');
+        }
+
+        if ($typecontrat !== '--') {
+            $queryBuilder->join('o.TypeContrats', 'tc')
+            ->andWhere('tc.Libelle LIKE :typecontrat')
+            ->setParameter('typecontrat', '%' . $typecontrat . '%');
+        }
+
+        if ($metier !== '--') {
+            $queryBuilder->join('o.metier', 'm')
+            ->andWhere('m.Libelle LIKE :metier')
+            ->setParameter('metier', '%' . $metier . '%');
+        }
+            
+        if ($domainemetier !== '--') {
+            $queryBuilder->join('m.DomaineMetiers', 'dm')
+            ->andWhere('dm.Libelle LIKE :domainemetier')
+                ->setParameter('domainemetier', '%' . $domainemetier . '%');
+        }
+
+        if ($niveaupro !== '--') {
+            $queryBuilder->andWhere('o.niveaupro LIKE :niveaupro')
+                ->setParameter('niveaupro', '%' . $niveaupro . '%');
+        }
+
+        return $queryBuilder->getQuery()->getResult();
+    }
+
+
+
+
+    public function findByFilters(string $domainemetier, string $metier, string $typecontrat, Request $request): array
+    {
+        $queryBuilder = $this->createQueryBuilder('o');
+
+        if ($domainemetier !== '--') {
+            $queryBuilder->andWhere('o.domainemetier LIKE :domainemetier')
+                ->setParameter('domainemetier', '%' . $domainemetier . '%');
+
+        }
+         if ($metier !== '--') {
+             $queryBuilder->andWhere('o.metier LIKE :metier')
+                 ->setParameter('metier', '%' . $metier . '%');
+
+             return $queryBuilder->getQuery()->getResult();
+         }
     }
 
 //    /**

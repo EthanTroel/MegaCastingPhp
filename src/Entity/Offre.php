@@ -68,12 +68,23 @@ class Offre
     #[ORM\JoinColumn(name: 'IdentifiantTypeContrat', referencedColumnName: 'Identifiant', nullable: false)]
     private ?TypeContrat $TypeContrats = null;
 
+    #[ORM\JoinTable(name: 'OffreUser')]
+    #[ORM\JoinColumn(name: 'IdentifiantOffre', referencedColumnName: 'Identifiant')]
+    #[ORM\InverseJoinColumn(name: 'IdentifiantUser', referencedColumnName: 'id')]
+    #[ORM\ManyToMany(targetEntity: User::class, inversedBy: 'offres')]
+    private Collection $OffreUser;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $niveaupro = null;
+
+
 
 
     public function __construct()
     {
         $this->sexes = new ArrayCollection();
         $this->partenaireDiffusions = new ArrayCollection();
+        $this->OffreUser = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -275,6 +286,54 @@ class Offre
     public function setTypeContrats(?TypeContrat $TypeContrats): self
     {
         $this->TypeContrats = $TypeContrats;
+
+        return $this;
+    }
+
+    public function getManyToMany(): ?string
+    {
+        return $this->ManyToMany;
+    }
+
+    public function setManyToMany(string $ManyToMany): self
+    {
+        $this->ManyToMany = $ManyToMany;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, user>
+     */
+    public function getOffreUser(): Collection
+    {
+        return $this->OffreUser;
+    }
+
+    public function addOffreUser(user $offreUser): self
+    {
+        if (!$this->OffreUser->contains($offreUser)) {
+            $this->OffreUser->add($offreUser);
+        }
+
+        return $this;
+    }
+
+    public function removeOffreUser(user $offreUser): self
+    {
+        $this->OffreUser->removeElement($offreUser);
+
+        return $this;
+    }
+
+    public function getNiveaupro(): ?string
+    {
+        return $this->niveaupro;
+    }
+
+    public function setNiveaupro(?string $niveaupro): self
+    {
+        $this->niveaupro = $niveaupro;
 
         return $this;
     }

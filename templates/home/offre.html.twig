@@ -16,10 +16,13 @@
         <p class="card-text">Age demandé: Entre {{ offre.agemin }} et {{ offre.ageMax }} ans</p>
         <p class="card-text">{{ offre.description }}</p>
         <p class="card-text">Type de contrat: {{ offre.typeContrats.libelle }}</p>
-        <h5 class="card-title">Du {{ offre.dateDeb.format("d/m/Y") }} au {{ offre.dateFin.format("d/m/Y") }}</h5>
+        <p class="card-title">Du {{ offre.dateDeb.format("d/m/Y") }} au {{ offre.dateFin.format("d/m/Y") }}</p>
         <br>
+        <p class="card-text">Entreprise: {{ offre.clients.nom }}</p>
+        <p class="card-text">Niveau demandé : {{ offre.niveaupro }}</p>
+
         <br>
-        <a href="#" class="btn btn-primary">Postuler</a>
+        <a href="{{ path('app_home_postuler', {'id': offre.id}) }}" class="btn btn-primary">Postuler</a>
         <ul>
 
         </ul>

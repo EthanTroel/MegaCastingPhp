@@ -28,7 +28,12 @@
                             <h5 class="card-title">{{ offre.libelle }}</h5>
                             <h6 class="card-subtitle mb-2 text-muted">{{ offre.reference }}</h6>
                             <p class="card-text">{{ offre.localisation }}</p>
-                            <h5 class="card-title">Du {{ offre.datedebut }} au {{ offre.datefin }}</h5>
+                            <p class="card-text">Age demandé: Entre {{ offre.agemin }} et {{ offre.ageMax }} ans</p>
+                            <p class="card-text">{{ offre.description }}</p>
+                            <p class="card-text">Type de contrat: {{ offre.typeContrats.libelle }}</p>
+                            <p class="card-text">Du {{ offre.dateDeb.format("d/m/Y") }} au {{ offre.dateFin.format("d/m/Y") }}</p>
+                            <p class="card-text">Entreprise: {{ offre.clients.nom }}</p>
+                            <p class="card-text">Du {{ offre.datedebut }} au {{ offre.datefin }}</p>
                         </div>
                     </div>
                 {% endfor %}

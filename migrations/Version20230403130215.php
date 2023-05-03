@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20230321154912 extends AbstractMigration
+final class Version20230403130215 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -20,7 +20,7 @@ final class Version20230321154912 extends AbstractMigration
     public function up(Schema $schema): void
     {
         // this up() migration is auto-generated, please modify it to your needs
-        $this->addSql('ALTER TABLE [user] ADD is_verified BIT NOT NULL');
+        $this->addSql('ALTER TABLE Offre ADD niveaupro NVARCHAR(255)');
     }
 
     public function down(Schema $schema): void
@@ -36,6 +36,6 @@ final class Version20230321154912 extends AbstractMigration
         $this->addSql('CREATE SCHEMA db_owner');
         $this->addSql('CREATE SCHEMA db_securityadmin');
         $this->addSql('CREATE SCHEMA dbo');
-        $this->addSql('ALTER TABLE [user] DROP COLUMN is_verified');
+        $this->addSql('ALTER TABLE Offre DROP COLUMN niveaupro');
     }
 }
