@@ -22,7 +22,13 @@
         <p class="card-text">Niveau demandé : {{ offre.niveaupro }}</p>
 
         <br>
+        {% if app.user is defined and app.user is null %}
+        <a href="/login" class="btn btn-primary">Se connecter pour postuler</a>
+        {% endif %}
+
+        {% if app.user is defined and app.user is not null %}
         <a href="{{ path('app_home_postuler', {'id': offre.id}) }}" class="btn btn-primary">Postuler</a>
+        {% endif %}
         <ul>
 
         </ul>

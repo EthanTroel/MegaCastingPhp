@@ -20,12 +20,13 @@ class FilterType extends AbstractType
     {
         $this->security = $security;
     }
+    
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $user = $this->security->getUser();
-        $userNiveauPro = $user->getNiveauPro();
+        $userNiveauPro = $user ? $user->getNiveauPro() : null;
+        
         $builder
-
             ->add('search', TextType::class, [
                 'label' => 'Recherche',
                 'required' => false,
@@ -33,40 +34,38 @@ class FilterType extends AbstractType
                     'placeholder' => 'Recherche',
                     'data' => null,
                 ],
-            ])
-            
+            ]);
         
-            
-            ->add('niveauPro', ChoiceType::class, [
+        if ($userNiveauPro) {
+            $builder->add('niveauPro', ChoiceType::class, [
                 'choices' => [
                     'Rechercher en fonction du niveau pro' => $userNiveauPro,
                 ],
                 'expanded' => true,
                 'multiple' => true,
-            ])
+            ]);
+        }
+        
+        $builder
             ->add('domainesMetiers', EntityType::class, [
                 'class' => 'App\Entity\DomaineMetier',
                 'choice_label' => 'Libelle',
                 'choice_value' => 'Libelle',
                 'data' => null,
             ])
-            
-
-            ->add('metier',EntityType::class,
-                ["class"=>"App\Entity\Metier",
-                    'choice_label' => 'Libelle',
-                    'choice_value' => 'Libelle',
-                    'data' => null,
-                ])
-            ->add('TypeContrats',EntityType::class,
-                ["class"=>"App\Entity\TypeContrat",
-                    'choice_label' => 'Libelle',
-                    'choice_value' => 'Libelle',
-                    'data' => null,
-                ])
-
-            ->add('Rechercher',SubmitType::class)
-        ;
+            ->add('metier', EntityType::class, [
+                'class' => 'App\Entity\Metier',
+                'choice_label' => 'Libelle',
+                'choice_value' => 'Libelle',
+                'data' => null,
+            ])
+            ->add('TypeContrats', EntityType::class, [
+                'class' => 'App\Entity\TypeContrat',
+                'choice_label' => 'Libelle',
+                'choice_value' => 'Libelle',
+                'data' => null,
+            ])
+            ->add('Rechercher', SubmitType::class);
     }
 
     public function configureOptions(OptionsResolver $resolver): void

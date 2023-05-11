@@ -20,6 +20,15 @@ use function Deployer\test;
 
 class HomeController extends AbstractController
 {
+
+    #[Route('/', name: 'redirecthome')]
+    public function redirecthome(EntityManagerInterface $entityManager, PaginatorInterface $paginator, Request $request): Response
+    {
+        return $this->redirectToRoute('app_home');
+    }
+
+
+
     #[Route('/offrecasting/', name: 'app_home')]
     public function index(EntityManagerInterface $entityManager, PaginatorInterface $paginator, Request $request): Response
     {
