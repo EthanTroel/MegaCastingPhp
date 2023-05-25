@@ -38,7 +38,7 @@ class HomeController extends AbstractController
         $offre = $paginator->paginate(
             $donnees, // Requête contenant les données à paginer (ici nos articles)
             $request->query->getInt('page', 1), // Numéro de la page en cours, passé dans l'URL, 1 si aucune page
-            1 // Nombre de résultats par page
+            5 // Nombre de résultats par page
         );
         if ($offre == null) {
             throw $this->createNotFoundException("L'offre n'existe pas");
@@ -59,7 +59,7 @@ class HomeController extends AbstractController
         $domaine = $paginator->paginate(
             $donnees, // Requête contenant les données à paginer
             $request->query->getInt('page', 1), // Numéro de la page en cours, passé dans l'URL, 1 si aucune page
-            1 // Nombre de résultats par page
+            5 // Nombre de résultats par page
         );
         if ($domaine == null) {
             throw $this->createNotFoundException("Le domaine n'existe pas");
@@ -88,7 +88,7 @@ class HomeController extends AbstractController
             $offres = $paginator->paginate(
                 $result,
                 $request->query->getInt('page', 1),
-                1
+                5
             
             );
            
@@ -109,7 +109,7 @@ class HomeController extends AbstractController
         $offres = $paginator->paginate(
             $entityManager->getRepository(Offre::class)->findAll(),
             $request->query->getInt('page', 1),
-            1
+            5
         );
     
         return $this->render('home/index.html.twig', [
